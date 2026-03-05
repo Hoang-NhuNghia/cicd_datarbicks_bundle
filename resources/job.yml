@@ -3,14 +3,14 @@ resources:
     cicd_template_job:
       name: cicd_template_job
       git_source:
-        git_url: https://github.com/username/repo-name.git
+        git_url: https://github.com/Hoang-NhuNghia/cicd_datarbicks_bundle
         git_provider: gitHub
         git_branch: main
       tasks:
         - task_key: python_task
           job_cluster_key: job_cluster
           spark_python_task:
-            python_file: ../src/main.py
+            python_file: src/main.py
       job_clusters:
         - job_cluster_key: job_cluster
           new_cluster:
