@@ -1,0 +1,34 @@
+resources:
+  jobs:
+    cicd_template_job:
+      name: cicd_template_job
+      git_source:
+        git_url: https://github.com/username/repo-name.git
+        git_provider: gitHub
+        git_branch: main
+      tasks:
+        - task_key: python_task
+          job_cluster_key: job_cluster
+          spark_python_task:
+            python_file: ../src/main.py
+      job_clusters:
+        - job_cluster_key: job_cluster
+          new_cluster:
+            cluster_name: ""
+            spark_version: 15.4.x-scala2.12
+            aws_attributes:
+              first_on_demand: 1
+              zone_id: ap-northeast-1a
+              spot_bid_price_percent: 100
+            node_type_id: m7gd.2xlarge
+            spark_env_vars:
+              PYSPARK_PYTHON: /databricks/python3/bin/python3
+              SSH_PRIVATE_KEY: "{{secrets/dx_github_deploy_key/deploy_key}}"
+            enable_elastic_disk: true
+            init_scripts:
+              - volumes:
+                  destination: /Volumes/admin_resources_dev/analytics_functions/init_scripts/lake_utils_install.sh
+            data_security_mode: DATA_SECURITY_MODE_STANDARD
+            runtime_engine: STANDARD
+            kind: CLASSIC_PREVIEW
+            is_single_node: true
