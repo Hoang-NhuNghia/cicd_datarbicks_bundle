@@ -31,7 +31,7 @@ targets:
   prod:
     mode: production
     workspace:
-      host: https://aucnet-dev.cloud.databricks.com
+      host: https://aucnet-prod.cloud.databricks.com
       # We explicitly deploy to /Workspace/Users/hoangn@ns.aucnet.co.jp to make sure we only have a single copy.
       root_path: /Workspace/Users/hoangn@ns.aucnet.co.jp/.bundle/${bundle.name}/${bundle.target}
     variables:

@@ -7,8 +7,14 @@ resources:
         git_provider: gitHub
         git_branch: ${bundle.git.branch}
       tasks:
+        - task_key: init_env_task
+          job_cluster_key: job_cluster_main
+          spark_python_task:
+            python_file: scripts/run_install.py
         - task_key: python_task
-          job_cluster_key: job_cluster
+          depends_on:
+            - task_key: init_env_task
+          job_cluster_key: job_cluster_main
           spark_python_task:
             python_file: src/main.py
       job_clusters:
@@ -25,9 +31,6 @@ resources:
               PYSPARK_PYTHON: /databricks/python3/bin/python3
               SSH_PRIVATE_KEY: "{{secrets/dx_github_deploy_key/deploy_key}}"
             enable_elastic_disk: true
-            init_scripts:
-              - volumes:
-                  destination: /Volumes/admin_resources_dev/analytics_functions/init_scripts/lake_utils_install.sh
             data_security_mode: DATA_SECURITY_MODE_STANDARD
             runtime_engine: STANDARD
             kind: CLASSIC_PREVIEW
